@@ -14,14 +14,15 @@ const MatchCard = ({ match, teams, isHost, onMatchUpdate }) => {
 
   const handleUpdateScore = async () => {
     if (!score1 || !score2) return
-    
+
     setLoading(true)
     try {
       const response = await api.updateMatchScore(match.id, parseInt(score1), parseInt(score2))
-      onMatchUpdate(response.data)
+      await onMatchUpdate(response.data) // Ensure this completes before continuing
       setIsEditing(false)
     } catch (err) {
       console.error('Failed to update score', err)
+      alert('Failed to update score. Please try again.')
     } finally {
       setLoading(false)
     }

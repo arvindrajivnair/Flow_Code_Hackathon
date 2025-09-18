@@ -38,13 +38,23 @@ const BracketView = () => {
     }
   };
 
-  const handleMatchUpdate = (updatedMatch) => {
+  const handleMatchUpdate = async (updatedMatch) => {
+    // Update the current match immediately for responsive UI
     setTournamentData(prev => ({
       ...prev,
-      matches: prev.matches.map(match => 
+      matches: prev.matches.map(match =>
         match.id === updatedMatch.id ? updatedMatch : match
       )
     }));
+
+    // Reload entire tournament data to get updated bracket progression
+    // This ensures we see winners advanced to next rounds
+    try {
+      const response = await api.getTournament(id);
+      setTournamentData(response.data);
+    } catch (err) {
+      console.error('Failed to reload tournament after match update:', err);
+    }
   };
 
   if (loading) {

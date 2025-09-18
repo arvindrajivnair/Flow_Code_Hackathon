@@ -30,12 +30,15 @@ def update_match_score(
     elif score_data.score2 > score_data.score1:
         match.winner_id = match.team2_id
     else:
-        match.winner_id = None  # Tie (shouldn't happen in knockout)
-    
+        # In knockout tournaments, ties shouldn't happen
+        # But if they do, we'll leave winner_id as None
+        match.winner_id = None
+
     db.commit()
-    
-    # Advance winner to next round
-    if match.winner_id:
+    db.refresh(match)
+
+    # Advance winner to next round if there is one
+    if match.winner_id and match.next_match_id:
         advance_winner(db, match)
     
     db.refresh(match)

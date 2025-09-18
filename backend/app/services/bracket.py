@@ -72,15 +72,24 @@ def advance_winner(db: Session, match: Match) -> None:
     """Advance the winner to the next match"""
     if not match.winner_id or not match.next_match_id:
         return
-    
+
     next_match = db.query(Match).filter(Match.id == match.next_match_id).first()
     if not next_match:
         return
-    
+
     # Place winner in appropriate slot
     if match.next_match_slot == 1:
         next_match.team1_id = match.winner_id
+        # Clear scores if this match had been played before
+        next_match.score1 = None
+        next_match.score2 = None
+        next_match.winner_id = None
     elif match.next_match_slot == 2:
         next_match.team2_id = match.winner_id
-    
+        # Clear scores if this match had been played before
+        next_match.score1 = None
+        next_match.score2 = None
+        next_match.winner_id = None
+
     db.commit()
+    db.refresh(next_match)

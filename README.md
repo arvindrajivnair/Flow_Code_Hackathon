@@ -71,43 +71,6 @@ cp .env.example .env
 npm run dev
 
 
-## Project Structure
-
-
-/seedit
-├── backend/
-│   ├── app/
-│   │   ├── main.py              # FastAPI application entry
-│   │   ├── api/                 # API route handlers
-│   │   │   ├── auth.py
-│   │   │   ├── tournaments.py
-│   │   │   └── matches.py
-│   │   ├── models.py            # SQLAlchemy models
-│   │   ├── schemas.py           # Pydantic schemas
-│   │   ├── deps.py              # Dependencies (auth, db)
-│   │   ├── services/
-│   │   │   ├── bracket.py       # Bracket generation logic
-│   │   │   └── auth.py          # JWT & password handling
-│   │   └── db.py                # Database connection
-│   ├── alembic/                 # Database migrations
-│   ├── requirements.txt
-│   └── Dockerfile
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Bracket.jsx      # Tournament bracket display
-│   │   │   ├── TeamForm.jsx     # Team management
-│   │   │   └── MatchCard.jsx    # Individual match display
-│   │   ├── pages/
-│   │   │   ├── CreateTournament.jsx
-│   │   │   └── BracketView.jsx
-│   │   ├── api/                 # API client functions
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── package.json
-│   └── Dockerfile
-├── docker-compose.yml
-└── README.md
 
 
 ## API Endpoints
@@ -202,4 +165,5 @@ Update CORS_ORIGINS in production to match your domain.
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes with appropriate tests
+
 4. Submit a pull request

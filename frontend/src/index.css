@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #000000 0%, #111111 100%);
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFD700;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFED4A;
+}
+
+/* Custom utility classes */
+.glow-on-hover {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.glow-on-hover:hover {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.bracket-line {
+  border-color: #FFD700;
+  background: linear-gradient(90deg, transparent, #FFD700, transparent);
+}
+
+.gold-text-glow {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Input focus effects */
+.input-glow:focus {
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2), 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+/* Button hover effects */
+.btn-gold {
+  background: linear-gradient(135deg, #FFD700 0%, #FFED4A 100%);
+  color: #000000;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #FFED4A 0%, #FFD700 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+/* Card animations */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+/* subtle NBA-ish separators */
+.bracket-col::after {
+  content: "";
+  display: block;
+  height: 100%;
+  border-right: 1px dashed rgba(255,215,0,0.25);
+  margin-left: auto;
+}

@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: seedit_db
+      POSTGRES_USER: seedit
+      POSTGRES_PASSWORD: seedit123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://seedit:seedit123@db:5432/seedit_db
+      JWT_SECRET_KEY: your-super-secret-jwt-key-change-this-in-production
+      CORS_ORIGINS: '["http://localhost:5173"]'
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_API_URL: http://localhost:8000
+
+volumes:
+  postgres_data:

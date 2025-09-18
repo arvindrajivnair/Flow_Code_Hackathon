@@ -1,169 +1,250 @@
 # SeedIt - Tournament Bracket Generator
 
-A modern tournament bracket management system with real-time updates, supporting multiple sports formats with host-controlled administration.
+A full-stack tournament bracket generator application that allows users to create tournaments, manage teams, generate knockout brackets, and track match results in real-time.
 
-## Features
+## 🏆 Features
 
-- *Multi-Sport Support*: Basketball, football, badminton, and more
-- *Smart Bracket Generation*: Auto-generates knockout brackets with optional team seeding
-- *Host-Only Control*: Secure JWT authentication restricting write access to tournament hosts
-- *Real-time Updates*: Live bracket updates via WebSocket or polling fallback
-- *Modern UI*: Black & gold themed interface with interactive elements and smooth animations
-- *Responsive Design*: Works seamlessly across desktop and mobile devices
+- *Tournament Management*: Create tournaments for different sports and competitions
+- *Team Seeding*: Add teams with proper seeding for fair bracket generation
+- *Automated Brackets*: Generate knockout tournament brackets automatically
+- *Real-time Updates*: Update match scores and track tournament progress
+- *User Roles*: Host and Viewer roles with different permissions
+- *Responsive Design*: Modern UI built with React and Tailwind CSS
+- *RESTful API*: FastAPI backend with PostgreSQL database
+- *Authentication*: Secure JWT-based user authentication
 
-## Tech Stack
+## 🛠 Tech Stack
 
-- *Frontend*: React 18 + Vite + Tailwind CSS
-- *Backend*: FastAPI + Pydantic v2 + SQLAlchemy 2.x + Alembic
-- *Database*: PostgreSQL with optimized indexing
-- *Authentication*: JWT tokens with role-based access control
-- *Real-time*: WebSocket (FastAPI) + Postgres LISTEN/NOTIFY
-- *Deployment*: Docker Compose ready
+### Frontend
+- *React 18* - Modern JavaScript framework
+- *Vite* - Fast build tool and dev server
+- *React Router DOM* - Client-side routing
+- *Tailwind CSS* - Utility-first CSS framework
+- *Axios* - HTTP client for API calls
 
-## Quick Start
+### Backend
+- *FastAPI* - Modern Python web framework
+- *SQLAlchemy* - SQL ORM for database operations
+- *PostgreSQL* - Relational database
+- *Alembic* - Database migration tool
+- *JWT Authentication* - Secure token-based auth
+- *Pydantic* - Data validation and serialization
 
-### Option 1: Docker Compose (Recommended)
+### DevOps
+- *Docker & Docker Compose* - Containerization and orchestration
+- *PostgreSQL* - Production-ready database
 
-bash
-git clone <repository-url>
-cd seedit
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
-docker-compose up --build
+## 🚀 Quick Start
 
+### Prerequisites
+- Docker and Docker Compose
+- Node.js 18+ (for local frontend development)
+- Python 3.11+ (for local backend development)
 
-The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Documentation: http://localhost:8000/docs
+### Using Docker Compose (Recommended)
 
-### Option 2: Local Development
+1. *Clone the repository*
+   bash
+   git clone <repository-url>
+   cd seedit
+   
 
-#### Prerequisites
-- Node.js 18+
-- Python 3.11+
-- PostgreSQL 14+
+2. *Start all services*
+   bash
+   docker-compose up --build
+   
 
-#### Backend Setup
-bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
+3. *Access the application*
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
 
-# Database setup
-createdb seedit_db
-cp .env.example .env
-# Edit .env with your database credentials
-
-# Run migrations
-alembic upgrade head
-
-# Start server
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-
+### Local Development
 
 #### Frontend Setup
 bash
 cd frontend
 npm install
-cp .env.example .env
 npm run dev
 
 
+#### Backend Setup
+bash
+cd backend
+pip install -e .
+uvicorn app.main:app --reload --port 8000
 
 
-## API Endpoints
+#### Database Setup
+bash
+# Start PostgreSQL with Docker
+docker run -d \
+  --name seedit-postgres \
+  -e POSTGRES_DB=seedit_db \
+  -e POSTGRES_USER=seedit \
+  -e POSTGRES_PASSWORD=seedit123 \
+  -p 5432:5432 \
+  postgres:15
+
+# Run database migrations
+cd backend
+alembic upgrade head
+
+
+## 📖 Usage Guide
+
+### 1. User Registration/Login
+- Create an account as a *Host* (can create and manage tournaments) or *Viewer* (can only view tournaments)
+- Login with your credentials to access the dashboard
+
+### 2. Create Tournament
+- Navigate to "Create Tournament"
+- Enter tournament name and select sport/competition type
+- Add participating teams with optional seeding
+
+### 3. Generate Bracket
+- Once teams are added, generate the knockout bracket
+- The system automatically creates matchups based on seeding
+
+### 4. Manage Matches
+- Update match scores as games are completed
+- Track tournament progress in real-time
+- View bracket visualization with current standings
+
+### 5. View Results
+- Monitor tournament progression
+- View match history and results
+- Export tournament data (if implemented)
+
+## 📁 Project Structure
+
+
+seedit/
+├── frontend/                 # React frontend application
+│   ├── src/
+│   │   ├── api/             # API client functions
+│   │   ├── components/      # Reusable React components
+│   │   │   ├── Bracket.jsx  # Tournament bracket visualization
+│   │   │   ├── Layout.jsx   # App layout wrapper
+│   │   │   ├── MatchCard.jsx# Individual match display
+│   │   │   └── TeamForm.jsx # Team management form
+│   │   ├── pages/           # Main application pages
+│   │   │   ├── BracketView.jsx    # Tournament bracket page
+│   │   │   ├── CreateTournament.jsx # Tournament creation
+│   │   │   └── Login.jsx           # Authentication page
+│   │   ├── utils/           # Utility functions
+│   │   ├── App.jsx          # Main app component
+│   │   └── main.jsx         # Application entry point
+│   ├── package.json         # Frontend dependencies
+│   └── tailwind.config.js   # Tailwind CSS configuration
+├── backend/                  # FastAPI backend application
+│   ├── app/
+│   │   ├── api/             # API route handlers
+│   │   │   ├── auth.py      # Authentication endpoints
+│   │   │   ├── tournaments.py # Tournament management
+│   │   │   └── matches.py   # Match management
+│   │   ├── services/        # Business logic layer
+│   │   │   ├── auth.py      # Authentication service
+│   │   │   └── bracket.py   # Bracket generation logic
+│   │   ├── db.py           # Database configuration
+│   │   ├── models.py       # SQLAlchemy models
+│   │   ├── schemas.py      # Pydantic schemas
+│   │   └── main.py         # FastAPI application
+│   ├── alembic/            # Database migrations
+│   ├── pyproject.toml      # Python dependencies
+│   └── Dockerfile          # Backend container config
+├── docker-compose.yml       # Multi-service orchestration
+└── README.md               # This file
+
+
+## 🔧 Available Scripts
+
+### Frontend
+- npm run dev - Start development server
+- npm run build - Build for production
+- npm run preview - Preview production build
+
+### Backend
+- uvicorn app.main:app --reload - Start development server
+- alembic upgrade head - Apply database migrations
+- pytest - Run tests
+
+### Docker
+- docker-compose up - Start all services
+- docker-compose down - Stop all services
+- docker-compose build - Rebuild containers
+
+## 🎯 API Endpoints
 
 ### Authentication
-- POST /auth/login - Host login (returns JWT token)
-- GET /auth/me - Get current user info
+- POST /auth/register - User registration
+- POST /auth/login - User login
+- GET /auth/me - Get current user
 
 ### Tournaments
-- POST /tournaments - Create tournament (host-only)
-- GET /tournaments/{id} - Get tournament details and bracket
-- POST /tournaments/{id}/teams - Add teams to tournament (host-only)
-- POST /tournaments/{id}/bracket/generate - Generate initial bracket (host-only)
+- GET /tournaments - List tournaments
+- POST /tournaments - Create tournament
+- GET /tournaments/{id} - Get tournament details
+- PUT /tournaments/{id} - Update tournament
+- DELETE /tournaments/{id} - Delete tournament
 
 ### Matches
-- POST /matches/{id}/score - Update match score and advance winner (host-only)
-- WebSocket /tournaments/{id}/stream - Real-time bracket updates
+- GET /matches - List matches
+- PUT /matches/{id} - Update match score
+- GET /matches/tournament/{id} - Get tournament matches
 
-## Database Schema
+## 🎨 Design System
 
-### Core Tables
-- *users*: Authentication and role management
-- *tournaments*: Tournament metadata and sport type
-- *teams*: Team information with optional seeding
-- *matches*: Match details with bracket progression logic
+The application uses a clean, modern design with the following color scheme:
+- *Primary*: Black (#000000)
+- *Accent*: Gold (#FFD700)
+- *Background*: Various shades of gray
+- *Text*: High contrast black/white combinations
 
-### Key Features
-- Foreign key relationships ensure data integrity
-- Indexes on (tournament_id, round) for fast bracket queries
-- next_match_id and next_match_slot fields handle bracket progression
-- Unique constraints prevent duplicate team names per tournament
-
-## Authentication & Authorization
-
-### User Roles
-- *Host*: Can create tournaments, add teams, update scores
-- *Viewer*: Read-only access to view brackets and scores
-
-### JWT Implementation
-- Tokens expire in 24 hours
-- Role-based middleware restricts write operations
-- Secure password hashing with bcrypt
-
-## Development Workflow
-
-### Adding New Features
-1. Create database migration if schema changes needed
-2. Update models and schemas in backend
-3. Implement API endpoints with proper authentication
-4. Add frontend components and API integration
-5. Test with both host and viewer accounts
-
-### Running Tests
-bash
-# Backend tests
-cd backend
-pytest
-
-# Frontend tests
-cd frontend
-npm test
-
-
-## Environment Variables
+## 🔒 Environment Variables
 
 ### Backend (.env)
-
-DATABASE_URL=postgresql://user:password@localhost/seedit_db
-JWT_SECRET_KEY=your-secret-key-here
-JWT_ALGORITHM=HS256
-JWT_ACCESS_TOKEN_EXPIRE_MINUTES=1440
-CORS_ORIGINS=["http://localhost:3000"]
+env
+DATABASE_URL=postgresql://seedit:seedit123@localhost:5432/seedit_db
+JWT_SECRET_KEY=your-super-secret-jwt-key-change-this-in-production
+CORS_ORIGINS=["http://localhost:5173"]
 
 
 ### Frontend (.env)
+env
+VITE_API_URL=http://localhost:8000
 
-VITE_API_BASE_URL=http://localhost:8000
 
+## 🚧 Development Notes
 
-## Deployment
+- The frontend uses Vite for fast development and building
+- Backend follows FastAPI best practices with dependency injection
+- Database migrations are managed with Alembic
+- CORS is configured for local development
+- JWT tokens are used for stateless authentication
 
-The application is containerized and ready for deployment on platforms like:
-- Railway
-- Render
-- DigitalOcean App Platform
-- AWS ECS/Fargate
-
-Update CORS_ORIGINS in production to match your domain.
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes with appropriate tests
+2. Create a feature branch (git checkout -b feature/amazing-feature)
+3. Commit your changes (git commit -m 'Add some amazing feature')
+4. Push to the branch (git push origin feature/amazing-feature)
+5. Open a Pull Request
 
-4. Submit a pull request
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🏃‍♂ Next Steps
+
+- [ ] Add tournament templates for different sports
+- [ ] Implement real-time updates with WebSockets
+- [ ] Add tournament statistics and analytics
+- [ ] Implement bracket export functionality
+- [ ] Add email notifications for match updates
+- [ ] Mobile app development
+- [ ] Tournament scheduling system
+
+---
+
+Built with ⚡ by developers, for tournament organizers worldwide.
